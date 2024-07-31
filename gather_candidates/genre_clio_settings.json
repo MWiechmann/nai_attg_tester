@@ -3,8 +3,19 @@
     "candidates_goal": 10,
     "bias_strength_inc": -0.1,
     "model": "clio-v1",
-    "preset_name": "default",
+    "preset_name": "Default",
     "preset_settings": {
+        "stop_sequences": [
+            [
+                49231
+            ],
+            [
+                49360
+            ],
+            [
+                7794
+            ]
+        ],
         "temperature": 1.0,
         "max_length": 40,
         "min_length": 1,
@@ -25,23 +36,12 @@
         "order": [
             0
         ],
-        "phrase_rep_pen": "off",
-        "stop_sequences": [
-            [
-                49231
-            ],
-            [
-                49360
-            ],
-            [
-                7794
-            ],
-            [
-                85
-            ]
-        ]
+        "phrase_rep_pen": "off"
     },
-    "bias_phrases": {
-        "LitRPG": -0.2
+    "bias_phrase_dict": {
+        "LitRPG": -0.2,
+        "Fantasy": -0.1,
+        "Adventure": -0.1,
+        "Action": -0.1
     }
 }
