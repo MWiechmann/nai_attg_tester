@@ -10,6 +10,10 @@ files = [
     {file = "aiodns-3.0.0-py3-none-any.whl", hash = "sha256:2b19bc5f97e5c936638d28e665923c093d8af2bf3aa88d35c43417fa25d136a2"},
     {file = "aiodns-3.0.0.tar.gz", hash = "sha256:946bdfabe743fceeeb093c8a010f5d1645f708a241be849e17edfb0e49e08cd6"},
 ]
+files = [
+    {file = "aiodns-3.0.0-py3-none-any.whl", hash = "sha256:2b19bc5f97e5c936638d28e665923c093d8af2bf3aa88d35c43417fa25d136a2"},
+    {file = "aiodns-3.0.0.tar.gz", hash = "sha256:946bdfabe743fceeeb093c8a010f5d1645f708a241be849e17edfb0e49e08cd6"},
+]
 
 [package.dependencies]
 pycares = ">=4.0.0"
@@ -1181,6 +1185,14 @@ description = "multidict implementation"
 optional = false
 python-versions = ">=3.7"
 files = [
+
+[[package]]
+name = "multidict"
+version = "6.0.4"
+description = "multidict implementation"
+optional = false
+python-versions = ">=3.7"
+files = [
     {file = "multidict-6.0.4-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:0b1a97283e0c85772d613878028fec909f003993e1007eafa715b24b377cb9b8"},
     {file = "multidict-6.0.4-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:eeb6dcc05e911516ae3d1f207d4b0520d07f54484c49dfc294d6e7d63b734171"},
     {file = "multidict-6.0.4-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:d6d635d5209b82a3492508cf5b365f3446afb65ae7ebd755e70e18f287b0adf7"},
@@ -1448,6 +1460,18 @@ description = "Pexpect allows easy control of interactive console applications."
 optional = false
 python-versions = "*"
 files = [
+
+[package.extras]
+qa = ["flake8 (==3.8.3)", "mypy (==0.782)"]
+testing = ["docopt", "pytest (<6.0.0)"]
+
+[[package]]
+name = "pexpect"
+version = "4.8.0"
+description = "Pexpect allows easy control of interactive console applications."
+optional = false
+python-versions = "*"
+files = [
     {file = "pexpect-4.8.0-py2.py3-none-any.whl", hash = "sha256:0b48a55dcb3c05f3329815901ea4fc1537514d6ba867a152b581d69ae3710937"},
     {file = "pexpect-4.8.0.tar.gz", hash = "sha256:fc65a43959d153d0114afe13997d439c22823a27cefceb5ff35c2178c6784c0c"},
 ]
@@ -1462,9 +1486,28 @@ description = "Tiny 'shelve'-like database with concurrency support"
 optional = false
 python-versions = "*"
 files = [
+
+[package.dependencies]
+ptyprocess = ">=0.5"
+
+[[package]]
+name = "pickleshare"
+version = "0.7.5"
+description = "Tiny 'shelve'-like database with concurrency support"
+optional = false
+python-versions = "*"
+files = [
     {file = "pickleshare-0.7.5-py2.py3-none-any.whl", hash = "sha256:9649af414d74d4df115d5d718f82acb59c9d418196b7b4290ed47a12ce62df56"},
     {file = "pickleshare-0.7.5.tar.gz", hash = "sha256:87683d47965c1da65cdacaf31c8441d12b8044cdec9aca500cd78fc2c683afca"},
 ]
+
+[[package]]
+name = "pillow"
+version = "9.5.0"
+description = "Python Imaging Library (Fork)"
+optional = false
+python-versions = ">=3.7"
+files = [
 
 [[package]]
 name = "pillow"
@@ -1552,6 +1595,18 @@ description = "Query metadata from sdists / bdists / installed packages."
 optional = false
 python-versions = ">=3.6"
 files = [
+
+[package.extras]
+docs = ["furo", "olefile", "sphinx (>=2.4)", "sphinx-copybutton", "sphinx-inline-tabs", "sphinx-removed-in", "sphinxext-opengraph"]
+tests = ["check-manifest", "coverage", "defusedxml", "markdown2", "olefile", "packaging", "pyroma", "pytest", "pytest-cov", "pytest-timeout"]
+
+[[package]]
+name = "pkginfo"
+version = "1.9.6"
+description = "Query metadata from sdists / bdists / installed packages."
+optional = false
+python-versions = ">=3.6"
+files = [
     {file = "pkginfo-1.9.6-py3-none-any.whl", hash = "sha256:4b7a555a6d5a22169fcc9cf7bfd78d296b0361adad412a346c1226849af5e546"},
     {file = "pkginfo-1.9.6.tar.gz", hash = "sha256:8fd5896e8718a4372f0ea9cc9d96f6417c9b986e23a4d116dda26b62cc29d046"},
 ]
@@ -1566,9 +1621,32 @@ description = "A small Python package for determining appropriate platform-speci
 optional = false
 python-versions = ">=3.7"
 files = [
+
+[package.extras]
+testing = ["pytest", "pytest-cov"]
+
+[[package]]
+name = "platformdirs"
+version = "3.10.0"
+description = "A small Python package for determining appropriate platform-specific dirs, e.g. a \"user data dir\"."
+optional = false
+python-versions = ">=3.7"
+files = [
     {file = "platformdirs-3.10.0-py3-none-any.whl", hash = "sha256:d7c24979f292f916dc9cbf8648319032f551ea8c49a4c9bf2fb556a02070ec1d"},
     {file = "platformdirs-3.10.0.tar.gz", hash = "sha256:b45696dab2d7cc691a3226759c0d3b00c47c8b6e293d96f6436f733303f77f6d"},
 ]
+
+[package.extras]
+docs = ["furo (>=2023.7.26)", "proselint (>=0.13)", "sphinx (>=7.1.1)", "sphinx-autodoc-typehints (>=1.24)"]
+test = ["appdirs (==1.4.4)", "covdefaults (>=2.3)", "pytest (>=7.4)", "pytest-cov (>=4.1)", "pytest-mock (>=3.11.1)"]
+
+[[package]]
+name = "poetry"
+version = "1.6.1"
+description = "Python dependency management and packaging made easy."
+optional = false
+python-versions = ">=3.8,<4.0"
+files = [
 
 [package.extras]
 docs = ["furo (>=2023.7.26)", "proselint (>=0.13)", "sphinx (>=7.1.1)", "sphinx-autodoc-typehints (>=1.24)"]
@@ -1616,9 +1694,49 @@ description = "Poetry PEP 517 Build Backend"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
+
+[package.dependencies]
+build = ">=0.10.0,<0.11.0"
+cachecontrol = {version = ">=0.13.0,<0.14.0", extras = ["filecache"]}
+cleo = ">=2.0.0,<3.0.0"
+crashtest = ">=0.4.1,<0.5.0"
+dulwich = ">=0.21.2,<0.22.0"
+installer = ">=0.7.0,<0.8.0"
+jsonschema = ">=4.10.0,<4.18.0"
+keyring = ">=24.0.0,<25.0.0"
+packaging = ">=20.4"
+pexpect = ">=4.7.0,<5.0.0"
+pkginfo = ">=1.9.4,<2.0.0"
+platformdirs = ">=3.0.0,<4.0.0"
+poetry-core = "1.7.0"
+poetry-plugin-export = ">=1.5.0,<2.0.0"
+pyproject-hooks = ">=1.0.0,<2.0.0"
+requests = ">=2.26,<3.0"
+requests-toolbelt = ">=0.9.1,<2"
+shellingham = ">=1.5,<2.0"
+tomlkit = ">=0.11.4,<1.0.0"
+trove-classifiers = ">=2022.5.19"
+virtualenv = ">=20.22.0,<21.0.0"
+xattr = {version = ">=0.10.0,<0.11.0", markers = "sys_platform == \"darwin\""}
+
+[[package]]
+name = "poetry-core"
+version = "1.7.0"
+description = "Poetry PEP 517 Build Backend"
+optional = false
+python-versions = ">=3.8,<4.0"
+files = [
     {file = "poetry_core-1.7.0-py3-none-any.whl", hash = "sha256:38e174cdb00a84ee4a1cab66a378b435747f72414f5573bc18cfc3850a94df38"},
     {file = "poetry_core-1.7.0.tar.gz", hash = "sha256:8f679b83bd9c820082637beca1204124d5d2a786e4818da47ec8acefd0353b74"},
 ]
+
+[[package]]
+name = "poetry-plugin-export"
+version = "1.5.0"
+description = "Poetry plugin to export the dependencies to various formats"
+optional = false
+python-versions = ">=3.8,<4.0"
+files = [
 
 [[package]]
 name = "poetry-plugin-export"
@@ -1656,6 +1774,17 @@ description = "Cross-platform lib for process and system monitoring in Python."
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 files = [
+
+[package.dependencies]
+wcwidth = "*"
+
+[[package]]
+name = "psutil"
+version = "5.9.5"
+description = "Cross-platform lib for process and system monitoring in Python."
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+files = [
     {file = "psutil-5.9.5-cp27-cp27m-macosx_10_9_x86_64.whl", hash = "sha256:be8929ce4313f9f8146caad4272f6abb8bf99fc6cf59344a3167ecd74f4f203f"},
     {file = "psutil-5.9.5-cp27-cp27m-manylinux2010_i686.whl", hash = "sha256:ab8ed1a1d77c95453db1ae00a3f9c50227ebd955437bcf2a574ba8adbf6a74d5"},
     {file = "psutil-5.9.5-cp27-cp27m-manylinux2010_x86_64.whl", hash = "sha256:4aef137f3345082a3d3232187aeb4ac4ef959ba3d7c10c33dd73763fbc063da4"},
@@ -1682,6 +1811,17 @@ description = "Run a subprocess in a pseudo terminal"
 optional = false
 python-versions = "*"
 files = [
+
+[package.extras]
+test = ["enum34", "ipaddress", "mock", "pywin32", "wmi"]
+
+[[package]]
+name = "ptyprocess"
+version = "0.7.0"
+description = "Run a subprocess in a pseudo terminal"
+optional = false
+python-versions = "*"
+files = [
     {file = "ptyprocess-0.7.0-py2.py3-none-any.whl", hash = "sha256:4b41f3967fce3af57cc7e94b888626c18bf37a083e3651ca8feeb66d492fef35"},
     {file = "ptyprocess-0.7.0.tar.gz", hash = "sha256:5c5d0a3b48ceee0b48485e0c26037c0acd7d29765ca3fbb5cb3831d347423220"},
 ]
@@ -1693,9 +1833,28 @@ description = "Safely evaluate AST nodes without side effects"
 optional = false
 python-versions = "*"
 files = [
+
+[[package]]
+name = "pure-eval"
+version = "0.2.2"
+description = "Safely evaluate AST nodes without side effects"
+optional = false
+python-versions = "*"
+files = [
     {file = "pure_eval-0.2.2-py3-none-any.whl", hash = "sha256:01eaab343580944bc56080ebe0a674b39ec44a945e6d09ba7db3cb8cec289350"},
     {file = "pure_eval-0.2.2.tar.gz", hash = "sha256:2b45320af6dfaa1750f543d714b6d1c520a1688dec6fd24d339063ce0aaa9ac3"},
 ]
+
+[package.extras]
+tests = ["pytest"]
+
+[[package]]
+name = "pycares"
+version = "4.3.0"
+description = "Python interface for c-ares"
+optional = false
+python-versions = "*"
+files = [
 
 [package.extras]
 tests = ["pytest"]
@@ -1774,6 +1933,20 @@ description = "C parser in Python"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 files = [
+
+[package.dependencies]
+cffi = ">=1.5.0"
+
+[package.extras]
+idna = ["idna (>=2.1)"]
+
+[[package]]
+name = "pycparser"
+version = "2.21"
+description = "C parser in Python"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+files = [
     {file = "pycparser-2.21-py2.py3-none-any.whl", hash = "sha256:8ee45429555515e1f6b185e78100aea234072576aa43ab53aefcae078162fca9"},
     {file = "pycparser-2.21.tar.gz", hash = "sha256:e644fdec12f7872f86c58ff790da456218b10f863970249516d60a5eaca77206"},
 ]
@@ -1785,9 +1958,28 @@ description = "Pygments is a syntax highlighting package written in Python."
 optional = false
 python-versions = ">=3.7"
 files = [
+
+[[package]]
+name = "pygments"
+version = "2.16.1"
+description = "Pygments is a syntax highlighting package written in Python."
+optional = false
+python-versions = ">=3.7"
+files = [
     {file = "Pygments-2.16.1-py3-none-any.whl", hash = "sha256:13fc09fa63bc8d8671a6d247e1eb303c4b343eaee81d861f3404db2935653692"},
     {file = "Pygments-2.16.1.tar.gz", hash = "sha256:1daff0494820c69bc8941e407aa20f577374ee88364ee10a98fdbe0aece96e29"},
 ]
+
+[package.extras]
+plugins = ["importlib-metadata"]
+
+[[package]]
+name = "pynacl"
+version = "1.5.0"
+description = "Python binding to the Networking and Cryptography (NaCl) library"
+optional = false
+python-versions = ">=3.6"
+files = [
 
 [package.extras]
 plugins = ["importlib-metadata"]
@@ -1825,9 +2017,32 @@ description = "Wrappers to call pyproject.toml-based build backend hooks."
 optional = false
 python-versions = ">=3.7"
 files = [
+
+[package.dependencies]
+cffi = ">=1.4.1"
+
+[package.extras]
+docs = ["sphinx (>=1.6.5)", "sphinx-rtd-theme"]
+tests = ["hypothesis (>=3.27.0)", "pytest (>=3.2.1,!=3.3.0)"]
+
+[[package]]
+name = "pyproject-hooks"
+version = "1.0.0"
+description = "Wrappers to call pyproject.toml-based build backend hooks."
+optional = false
+python-versions = ">=3.7"
+files = [
     {file = "pyproject_hooks-1.0.0-py3-none-any.whl", hash = "sha256:283c11acd6b928d2f6a7c73fa0d01cb2bdc5f07c57a2eeb6e83d5e56b97976f8"},
     {file = "pyproject_hooks-1.0.0.tar.gz", hash = "sha256:f271b298b97f5955d53fb12b72c1fb1948c22c1a6b70b315c54cedaca0264ef5"},
 ]
+
+[[package]]
+name = "pyrsistent"
+version = "0.19.3"
+description = "Persistent/Functional/Immutable data structures"
+optional = false
+python-versions = ">=3.7"
+files = [
 
 [[package]]
 name = "pyrsistent"
@@ -1872,6 +2087,14 @@ description = "Extensions to the standard Python datetime module"
 optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,>=2.7"
 files = [
+
+[[package]]
+name = "python-dateutil"
+version = "2.8.2"
+description = "Extensions to the standard Python datetime module"
+optional = false
+python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,>=2.7"
+files = [
     {file = "python-dateutil-2.8.2.tar.gz", hash = "sha256:0123cacc1627ae19ddf3c27a5de5bd67ee4586fbdd6440d9748f8abb483d3e86"},
     {file = "python_dateutil-2.8.2-py2.py3-none-any.whl", hash = "sha256:961d03dc3453ebbc59dbdea9e4e11c5651520a876d0f4db161e8674aae935da9"},
 ]
@@ -1897,6 +2120,14 @@ description = "Python for Window Extensions"
 optional = false
 python-versions = "*"
 files = [
+
+[[package]]
+name = "pywin32"
+version = "306"
+description = "Python for Window Extensions"
+optional = false
+python-versions = "*"
+files = [
     {file = "pywin32-306-cp310-cp310-win32.whl", hash = "sha256:06d3420a5155ba65f0b72f2699b5bacf3109f36acbe8923765c22938a69dfc8d"},
     {file = "pywin32-306-cp310-cp310-win_amd64.whl", hash = "sha256:84f4471dbca1887ea3803d8848a1616429ac94a4a8d05f4bc9c5dcfd42ca99c8"},
     {file = "pywin32-306-cp311-cp311-win32.whl", hash = "sha256:e65028133d15b64d2ed8f06dd9fbc268352478d4f9289e69c190ecd6818b6407"},
@@ -1912,6 +2143,14 @@ files = [
     {file = "pywin32-306-cp39-cp39-win32.whl", hash = "sha256:e25fd5b485b55ac9c057f67d94bc203f3f6595078d1fb3b458c9c28b7153a802"},
     {file = "pywin32-306-cp39-cp39-win_amd64.whl", hash = "sha256:39b61c15272833b5c329a2989999dcae836b1eed650252ab1b7bfbe1d59f30f4"},
 ]
+
+[[package]]
+name = "pywin32-ctypes"
+version = "0.2.2"
+description = "A (partial) reimplementation of pywin32 using ctypes/cffi"
+optional = false
+python-versions = ">=3.6"
+files = [
 
 [[package]]
 name = "pywin32-ctypes"
@@ -2036,6 +2275,17 @@ description = "rapid fuzzy string matching"
 optional = false
 python-versions = ">=3.7"
 files = [
+
+[package.dependencies]
+cffi = {version = "*", markers = "implementation_name == \"pypy\""}
+
+[[package]]
+name = "rapidfuzz"
+version = "2.15.1"
+description = "rapid fuzzy string matching"
+optional = false
+python-versions = ">=3.7"
+files = [
     {file = "rapidfuzz-2.15.1-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:fc0bc259ebe3b93e7ce9df50b3d00e7345335d35acbd735163b7c4b1957074d3"},
     {file = "rapidfuzz-2.15.1-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:d59fb3a410d253f50099d7063855c2b95df1ef20ad93ea3a6b84115590899f25"},
     {file = "rapidfuzz-2.15.1-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:c525a3da17b6d79d61613096c8683da86e3573e807dfaecf422eea09e82b5ba6"},
@@ -2129,6 +2379,17 @@ files = [
     {file = "rapidfuzz-2.15.1-pp39-pypy39_pp73-win_amd64.whl", hash = "sha256:785744f1270828cc632c5a3660409dee9bcaac6931a081bae57542c93e4d46c4"},
     {file = "rapidfuzz-2.15.1.tar.gz", hash = "sha256:d62137c2ca37aea90a11003ad7dc109c8f1739bfbe5a9a217f3cdb07d7ac00f6"},
 ]
+
+[package.extras]
+full = ["numpy"]
+
+[[package]]
+name = "regex"
+version = "2022.10.31"
+description = "Alternative regular expression module, to replace re."
+optional = false
+python-versions = ">=3.6"
+files = [
 
 [package.extras]
 full = ["numpy"]
@@ -2237,9 +2498,35 @@ description = "Python HTTP for Humans."
 optional = false
 python-versions = ">=3.7"
 files = [
+
+[[package]]
+name = "requests"
+version = "2.31.0"
+description = "Python HTTP for Humans."
+optional = false
+python-versions = ">=3.7"
+files = [
     {file = "requests-2.31.0-py3-none-any.whl", hash = "sha256:58cd2187c01e70e6e26505bca751777aa9f2ee0b7f4300988b709f44e013003f"},
     {file = "requests-2.31.0.tar.gz", hash = "sha256:942c5a758f98d790eaed1a29cb6eefc7ffb0d1cf7af05c3d2791656dbd6ad1e1"},
 ]
+
+[package.dependencies]
+certifi = ">=2017.4.17"
+charset-normalizer = ">=2,<4"
+idna = ">=2.5,<4"
+urllib3 = ">=1.21.1,<3"
+
+[package.extras]
+socks = ["PySocks (>=1.5.6,!=1.5.7)"]
+use-chardet-on-py3 = ["chardet (>=3.0.2,<6)"]
+
+[[package]]
+name = "requests-toolbelt"
+version = "1.0.0"
+description = "A utility belt for advanced users of python-requests"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+files = [
 
 [package.dependencies]
 certifi = ">=2017.4.17"
@@ -2341,9 +2628,25 @@ description = "Tool to Detect Surrounding Shell"
 optional = false
 python-versions = ">=3.7"
 files = [
+
+[[package]]
+name = "shellingham"
+version = "1.5.3"
+description = "Tool to Detect Surrounding Shell"
+optional = false
+python-versions = ">=3.7"
+files = [
     {file = "shellingham-1.5.3-py2.py3-none-any.whl", hash = "sha256:419c6a164770c9c7cfcaeddfacb3d31ac7a8db0b0f3e9c1287679359734107e9"},
     {file = "shellingham-1.5.3.tar.gz", hash = "sha256:cb4a6fec583535bc6da17b647dd2330cf7ef30239e05d547d99ae3705fd0f7f8"},
 ]
+
+[[package]]
+name = "six"
+version = "1.16.0"
+description = "Python 2 and 3 compatibility utilities"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
+files = [
 
 [[package]]
 name = "six"
@@ -2436,9 +2739,30 @@ description = "Style preserving TOML library"
 optional = false
 python-versions = ">=3.7"
 files = [
+
+[package.extras]
+dev = ["black (==22.3)", "datasets", "numpy", "pytest", "requests"]
+docs = ["setuptools-rust", "sphinx", "sphinx-rtd-theme"]
+testing = ["black (==22.3)", "datasets", "numpy", "pytest", "requests"]
+
+[[package]]
+name = "tomlkit"
+version = "0.12.1"
+description = "Style preserving TOML library"
+optional = false
+python-versions = ">=3.7"
+files = [
     {file = "tomlkit-0.12.1-py3-none-any.whl", hash = "sha256:712cbd236609acc6a3e2e97253dfc52d4c2082982a88f61b640ecf0817eab899"},
     {file = "tomlkit-0.12.1.tar.gz", hash = "sha256:38e1ff8edb991273ec9f6181244a6a391ac30e9f5098e7535640ea6be97a7c86"},
 ]
+
+[[package]]
+name = "tornado"
+version = "6.3.3"
+description = "Tornado is a Python web framework and asynchronous networking library, originally developed at FriendFeed."
+optional = false
+python-versions = ">= 3.8"
+files = [
 
 [[package]]
 name = "tornado"
@@ -2467,9 +2791,29 @@ description = "Traitlets Python configuration system"
 optional = false
 python-versions = ">=3.8"
 files = [
+
+[[package]]
+name = "traitlets"
+version = "5.10.0"
+description = "Traitlets Python configuration system"
+optional = false
+python-versions = ">=3.8"
+files = [
     {file = "traitlets-5.10.0-py3-none-any.whl", hash = "sha256:417745a96681fbb358e723d5346a547521f36e9bd0d50ba7ab368fff5d67aa54"},
     {file = "traitlets-5.10.0.tar.gz", hash = "sha256:f584ea209240466e66e91f3c81aa7d004ba4cf794990b0c775938a1544217cd1"},
 ]
+
+[package.extras]
+docs = ["myst-parser", "pydata-sphinx-theme", "sphinx"]
+test = ["argcomplete (>=3.0.3)", "mypy (>=1.5.1)", "pre-commit", "pytest (>=7.0,<7.5)", "pytest-mock", "pytest-mypy-testing"]
+
+[[package]]
+name = "trove-classifiers"
+version = "2023.9.19"
+description = "Canonical source for classifiers on PyPI (pypi.org)."
+optional = false
+python-versions = "*"
+files = [
 
 [package.extras]
 docs = ["myst-parser", "pydata-sphinx-theme", "sphinx"]
@@ -2521,9 +2865,40 @@ description = "Virtual Python Environment builder"
 optional = false
 python-versions = ">=3.7"
 files = [
+
+[package.extras]
+brotli = ["brotli (>=1.0.9)", "brotlicffi (>=0.8.0)"]
+secure = ["certifi", "cryptography (>=1.9)", "idna (>=2.0.0)", "pyopenssl (>=17.1.0)", "urllib3-secure-extra"]
+socks = ["pysocks (>=1.5.6,!=1.5.7,<2.0)"]
+zstd = ["zstandard (>=0.18.0)"]
+
+[[package]]
+name = "virtualenv"
+version = "20.24.5"
+description = "Virtual Python Environment builder"
+optional = false
+python-versions = ">=3.7"
+files = [
     {file = "virtualenv-20.24.5-py3-none-any.whl", hash = "sha256:b80039f280f4919c77b30f1c23294ae357c4c8701042086e3fc005963e4e537b"},
     {file = "virtualenv-20.24.5.tar.gz", hash = "sha256:e8361967f6da6fbdf1426483bfe9fca8287c242ac0bc30429905721cefbff752"},
 ]
+
+[package.dependencies]
+distlib = ">=0.3.7,<1"
+filelock = ">=3.12.2,<4"
+platformdirs = ">=3.9.1,<4"
+
+[package.extras]
+docs = ["furo (>=2023.7.26)", "proselint (>=0.13)", "sphinx (>=7.1.2)", "sphinx-argparse (>=0.4)", "sphinxcontrib-towncrier (>=0.2.1a0)", "towncrier (>=23.6)"]
+test = ["covdefaults (>=2.3)", "coverage (>=7.2.7)", "coverage-enable-subprocess (>=1)", "flaky (>=3.7)", "packaging (>=23.1)", "pytest (>=7.4)", "pytest-env (>=0.8.2)", "pytest-freezer (>=0.4.8)", "pytest-mock (>=3.11.1)", "pytest-randomly (>=3.12)", "pytest-timeout (>=2.1)", "setuptools (>=68)", "time-machine (>=2.10)"]
+
+[[package]]
+name = "wcwidth"
+version = "0.2.6"
+description = "Measures the displayed width of unicode strings in a terminal"
+optional = false
+python-versions = "*"
+files = [
 
 [package.dependencies]
 distlib = ">=0.3.7,<1"
@@ -2636,6 +3011,17 @@ description = "Yet another URL library"
 optional = false
 python-versions = ">=3.7"
 files = [
+
+[package.dependencies]
+cffi = ">=1.0"
+
+[[package]]
+name = "yarl"
+version = "1.9.2"
+description = "Yet another URL library"
+optional = false
+python-versions = ">=3.7"
+files = [
     {file = "yarl-1.9.2-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:8c2ad583743d16ddbdf6bb14b5cd76bf43b0d0006e918809d5d4ddf7bde8dd82"},
     {file = "yarl-1.9.2-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:82aa6264b36c50acfb2424ad5ca537a2060ab6de158a5bd2a72a032cc75b9eb8"},
     {file = "yarl-1.9.2-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:c0c77533b5ed4bcc38e943178ccae29b9bcf48ffd1063f5821192f23a1bd27b9"},
@@ -2711,6 +3097,18 @@ files = [
     {file = "yarl-1.9.2-cp39-cp39-win_amd64.whl", hash = "sha256:61016e7d582bc46a5378ffdd02cd0314fb8ba52f40f9cf4d9a5e7dbef88dee18"},
     {file = "yarl-1.9.2.tar.gz", hash = "sha256:04ab9d4b9f587c06d801c2abfe9317b77cdf996c65a90d5e84ecc45010823571"},
 ]
+
+[package.dependencies]
+idna = ">=2.0"
+multidict = ">=4.0"
+
+[[package]]
+name = "zipp"
+version = "3.17.0"
+description = "Backport of pathlib-compatible object wrapper for zip files"
+optional = false
+python-versions = ">=3.8"
+files = [
 
 [package.dependencies]
 idna = ">=2.0"
