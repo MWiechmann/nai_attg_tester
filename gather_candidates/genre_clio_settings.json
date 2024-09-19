@@ -42,6 +42,7 @@
         ]
     },
     "bias_phrases": {
-        "LitRPG": -0.2
+        "LitRPG": -0.1,
+        "Adventure": -0.2
     }
 }
