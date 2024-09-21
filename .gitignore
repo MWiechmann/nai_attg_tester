@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environment
+.env
+.venv
+env/
+venv/
+
+# Poetry
+poetry.lock
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# VSCode
+.vscode/
+
+# Logs
+logs/
+*.log
+
+# Data
+data/
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Other
+*.bak
+*.swp
+*.swo

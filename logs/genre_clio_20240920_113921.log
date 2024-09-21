@@ -146,3 +146,20 @@ Candidate search complete!
 2024-09-20 11:58:18,198 - INFO - Phrase 'Adventure' already exists. Incrementing count and changing bias by -0.1.
 2024-09-20 11:58:18,201 - INFO - Saved progress to ../data/genre_clio_results.csv.
 2024-09-20 11:58:18,237 - INFO - Checkpoint saved at 20 generations.
+2024-09-20 11:58:20,240 - INFO - Gen 21: Trying to gen phrase 20/20...
+2024-09-20 11:58:24,709 - INFO - Added new phrase: 'Drama'
+2024-09-20 11:58:24,711 - INFO - Saved progress to ../data/genre_clio_results.csv.
+2024-09-20 11:58:26,926 - INFO - 
+Candidate search complete!
+2024-09-20 11:58:26,927 - INFO - Top 10 terms:
+2024-09-20 11:58:26,929 - INFO -                  phrase  count  last_bias
+1                LitRPG     10       -0.7
+2             Adventure      5       -0.2
+11              Fantasy      2        0.0
+4               fantasy      2        0.0
+14   historical fiction      2        0.0
+0         Slice of Life      1        0.0
+3       horror: monster      1        0.0
+6   Greco-Roman Fantasy      1        0.0
+7                Comedy      1        0.0
+8    Historical Fiction      1        0.0
