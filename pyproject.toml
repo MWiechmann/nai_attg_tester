@@ -9,7 +9,7 @@ packages = [{include = "nai_attg_tester"}]
 [tool.poetry.dependencies]
 python = "==3.11.9"
 nest-asyncio = "^1.5.8"
-novelai-api = "^0.19.0"
+novelai-api = "^0.31.0"
 pandas = "^2.1.1"
 ipykernel = "^6.29.5"
 
