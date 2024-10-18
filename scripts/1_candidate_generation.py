@@ -34,7 +34,7 @@ def parse_config_value(value):
     return value
 
 # Read Settings
-config_file = CONFIG_DIR / 'config_character_types_kayra_details.ini'
+config_file = CONFIG_DIR / 'config_character_types_kayra_test.ini'
 config = configparser.ConfigParser()
 config.read(config_file)
 
@@ -51,7 +51,11 @@ bias_strength_inc = float(config['CANDIDATE GENERATION - GEN SETTINGS']['bias_st
 bias_phrases = ast.literal_eval(config['CANDIDATE GENERATION - GEN SETTINGS']['bias_phrases'])
 model_class, model_attr = config['CANDIDATE GENERATION - GEN SETTINGS']['model'].split('.')
 model = getattr(globals()[model_class], model_attr)
-prompts = ast.literal_eval(config['CANDIDATE GENERATION - GEN SETTINGS']['prompts'])
+
+# Handle 'prompts' as either a single string or a list of strings
+prompts_raw = parse_config_value(config['CANDIDATE GENERATION - GEN SETTINGS']['prompts'])
+prompts = [prompts_raw] if isinstance(prompts_raw, str) else prompts_raw
+
 stop_sequences = ast.literal_eval(config['CANDIDATE GENERATION - GEN SETTINGS']['stop_sequences'])
 checkpoint_interval = int(config['CANDIDATE GENERATION - GEN SETTINGS']['checkpoint_interval'])
 
