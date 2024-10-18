@@ -34,7 +34,7 @@ def parse_config_value(value):
     return value
 
 # Read Settings
-config_file = CONFIG_DIR / 'config_character_types_kayra_test.ini'
+config_file = CONFIG_DIR / 'config_character_types_kayra_details.ini'
 config = configparser.ConfigParser()
 config.read(config_file)
 
@@ -51,7 +51,7 @@ bias_strength_inc = float(config['CANDIDATE GENERATION - GEN SETTINGS']['bias_st
 bias_phrases = ast.literal_eval(config['CANDIDATE GENERATION - GEN SETTINGS']['bias_phrases'])
 model_class, model_attr = config['CANDIDATE GENERATION - GEN SETTINGS']['model'].split('.')
 model = getattr(globals()[model_class], model_attr)
-prompt = parse_config_value(config['CANDIDATE GENERATION - GEN SETTINGS']['prompt'])
+prompts = ast.literal_eval(config['CANDIDATE GENERATION - GEN SETTINGS']['prompts'])
 stop_sequences = ast.literal_eval(config['CANDIDATE GENERATION - GEN SETTINGS']['stop_sequences'])
 checkpoint_interval = int(config['CANDIDATE GENERATION - GEN SETTINGS']['checkpoint_interval'])
 
@@ -329,87 +329,95 @@ async def main():
     # Loop until you have candidate_goal unique phrases
     try:
         while len(df) < candidates_goal:
-            total_generations += 1
+            for prompt_index, prompt in enumerate(prompts, 1):
+                total_generations += 1
 
-            print(f"Gen {total_generations}: Trying to gen phrase {len(df)+1}/{candidates_goal}...")
-            logger.info(f"Gen {total_generations}: Trying to gen phrase {len(df)+1}/{candidates_goal}...")
+                prompt_preview = prompt[:50] + "..." if len(prompt) > 50 else prompt
+                print(f"Gen {total_generations}: Trying to gen phrase {len(df)+1}/{candidates_goal}...")
+                print(f"Using prompt {prompt_index}/{len(prompts)}: {prompt_preview}")
+                logger.info(f"Gen {total_generations}: Trying to gen phrase {len(df)+1}/{candidates_goal}...")
+                logger.info(f"Using prompt {prompt_index}/{len(prompts)}: {prompt_preview}")
 
-            try:
-                phrase = await asyncio.wait_for(
-                    gen_attg_candidate(
-                        model=model,
-                        preset=preset,
-                        prompt=prompt,
-                        stop_sequences=stop_sequences,
-                        cut_stop_seq=False,
-                        auth_method=auth_method,
-                        auth=auth,
-                        bias_groups=bias_groups,
-                    ),
-                    timeout=generation_timeout,
-                )
+                try:
+                    phrase = await asyncio.wait_for(
+                        gen_attg_candidate(
+                            model=model,
+                            preset=preset,
+                            prompt=prompt,
+                            stop_sequences=stop_sequences,
+                            cut_stop_seq=False,
+                            auth_method=auth_method,
+                            auth=auth,
+                            bias_groups=bias_groups,
+                        ),
+                        timeout=generation_timeout,
+                    )
 
-                # Check if the phrase is already in the DataFrame
-                if phrase in df["phrase"].values:
-                    df.loc[df["phrase"] == phrase, "count"] += 1
-                    df.loc[df["phrase"] == phrase, "last_bias"] = bias_phrases.get(phrase, 0)
-                    print(f"Phrase '{phrase}' already exists. Incrementing count and changing bias by {bias_strength_inc}.")
-                    logger.info(f"Phrase '{phrase}' already exists. Incrementing count and changing bias by {bias_strength_inc}.")
+                    # Check if the phrase is already in the DataFrame
+                    if phrase in df["phrase"].values:
+                        df.loc[df["phrase"] == phrase, "count"] += 1
+                        df.loc[df["phrase"] == phrase, "last_bias"] = bias_phrases.get(phrase, 0)
+                        print(f"Phrase '{phrase}' already exists. Incrementing count and changing bias by {bias_strength_inc}.")
+                        logger.info(f"Phrase '{phrase}' already exists. Incrementing count and changing bias by {bias_strength_inc}.")
 
-                    # Update the bias groups since the phrase was generated again
-                    update_bias_groups(phrase, bias_phrases, bias_strength_inc, bias_groups)
-                else:
-                    df.loc[len(df)] = [phrase, 1, bias_phrases.get(phrase, 0)]
-                    print(f"Added new phrase: '{phrase}'")
-                    logger.info(f"Added new phrase: '{phrase}'")
-                    terms_added += 1
+                        # Update the bias groups since the phrase was generated again
+                        update_bias_groups(phrase, bias_phrases, bias_strength_inc, bias_groups)
+                    else:
+                        new_row = pd.DataFrame({"phrase": [phrase], "count": [1], "last_bias": [bias_phrases.get(phrase, 0)]})
+                        df = pd.concat([df, new_row], ignore_index=True)
+                        print(f"Added new phrase: '{phrase}'")
+                        logger.info(f"Added new phrase: '{phrase}'")
+                        terms_added += 1
 
-                # Reset the unsuccessful_attempts counter if generation was successful
-                unsuccessful_attempts = 0
+                    # Reset the unsuccessful_attempts counter if generation was successful
+                    unsuccessful_attempts = 0
 
-                # Store results and settings
-                filename_candidates = PROJECT_ROOT / 'data' / f"{run_name}_candidates.csv"
-                df.to_csv(filename_candidates, index=False)
+                    # Store results and settings
+                    filename_candidates = PROJECT_ROOT / 'data' / f"{run_name}_candidates.csv"
+                    df.to_csv(filename_candidates, index=False)
 
-                # Update settings_data with the latest bias_phrases
-                settings_data["bias_phrases"] = str(bias_phrases)
+                    # Update settings_data with the latest bias_phrases
+                    settings_data["bias_phrases"] = str(bias_phrases)
 
-                print(f"Saved progress to {filename_candidates}.")
-                logger.info(f"Saved progress to {filename_candidates}.")
+                    print(f"Saved progress to {filename_candidates}.")
+                    logger.info(f"Saved progress to {filename_candidates}.")
 
-                # Save checkpoint every checkpoint_interval generations
-                if total_generations % checkpoint_interval == 0:
-                    update__candidates_run_info(run_name, settings_data, total_generations, terms_added, "ongoing", start_time, is_checkpoint=True)
-                    print(f"Checkpoint saved at {total_generations} generations.")
-                    logger.info(f"Checkpoint saved at {total_generations} generations.")
+                    # Save checkpoint every checkpoint_interval generations
+                    if total_generations % checkpoint_interval == 0:
+                        update__candidates_run_info(run_name, settings_data, total_generations, terms_added, "ongoing", start_time, is_checkpoint=True)
+                        print(f"Checkpoint saved at {total_generations} generations.")
+                        logger.info(f"Checkpoint saved at {total_generations} generations.")
 
-            except asyncio.TimeoutError:
-                print("Generation took too long. Retrying...")
-                logger.warning("Generation took too long. Retrying...")
-                unsuccessful_attempts += 1
-                if unsuccessful_attempts >= max_failed_gens:
-                    print(f"{max_failed_gens} unsuccessful generation attempts. Aborting candidate search.")
-                    logger.error(f"{max_failed_gens} unsuccessful generation attempts. Aborting candidate search.")
-                    update__candidates_run_info(run_name, settings_data, total_generations, terms_added, "aborted", start_time)
+                except asyncio.TimeoutError:
+                    print("Generation took too long. Retrying...")
+                    logger.warning("Generation took too long. Retrying...")
+                    unsuccessful_attempts += 1
+                    if unsuccessful_attempts >= max_failed_gens:
+                        print(f"{max_failed_gens} unsuccessful generation attempts. Aborting candidate search.")
+                        logger.error(f"{max_failed_gens} unsuccessful generation attempts. Aborting candidate search.")
+                        update__candidates_run_info(run_name, settings_data, total_generations, terms_added, "aborted", start_time)
+                        return
+                except Exception as e:
+                    if "Anonymous quota reached" in str(e):
+                        print(f"Error: {e}")
+                        print("Anonymous rate limit reached. This indicates you are not properly authenticated. Check your authentication method. Aborting candidate search.")
+                        logger.error(f"Error: {e}")
+                        logger.error("Anonymous rate limit reached. This indicates you are not properly authenticated. Check your authentication method. Aborting candidate search.")
+                        update__candidates_run_info(run_name, settings_data, total_generations, terms_added, "aborted", start_time)
+                        return
+                    else:
+                        print(f"Error: {e}")
+                        print("Aborting candidate search")
+                        logger.error(f"Error: {e}")
+                        logger.error("Aborting candidate search")
+                        update__candidates_run_info(run_name, settings_data, total_generations, terms_added, "aborted", start_time)
+                        return
+
+                # Wait for delay_time seconds before the next generation attempt
+                time.sleep(delay_time)
+
+                if len(df) >= candidates_goal:
                     break
-            except Exception as e:
-                if "Anonymous quota reached" in str(e):
-                    print(f"Error: {e}")
-                    print("Anonymous rate limit reached. This indicates you are not properly authenticated. Check your authentication method. Aborting candidate search.")
-                    logger.error(f"Error: {e}")
-                    logger.error("Anonymous rate limit reached. This indicates you are not properly authenticated. Check your authentication method. Aborting candidate search.")
-                    update__candidates_run_info(run_name, settings_data, total_generations, terms_added, "aborted", start_time)
-                    break
-                else:
-                    print(f"Error: {e}")
-                    print("Aborting candidate search")
-                    logger.error(f"Error: {e}")
-                    logger.error("Aborting candidate search")
-                    update__candidates_run_info(run_name, settings_data, total_generations, terms_added, "aborted", start_time)
-                    break
-
-            # Wait for delay_time seconds before the next generation attempt
-            time.sleep(delay_time)
 
         # Final update of run info if completed successfully
         if len(df) >= candidates_goal:
