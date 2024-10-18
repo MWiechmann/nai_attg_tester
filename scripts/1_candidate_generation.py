@@ -18,20 +18,13 @@ from novelai_api.Tokenizer import Tokenizer
 from novelai_api.utils import b64_to_tokens
 from novelai_api.BiasGroup import BiasGroup
 
+# Import shared functions from common_utils.py
+from common_utils import parse_config_value, nai_login, setup_logging
+
 # Define constants
 SCRIPT_DIR = Path(__file__).parent
 PROJECT_ROOT = SCRIPT_DIR.parent
 CONFIG_DIR = PROJECT_ROOT / 'config'
-
-def parse_config_value(value):
-    """
-    Parse a config value, preserving spaces if it's a quoted string.
-    """
-    value = value.strip()
-    if (value.startswith("'") and value.endswith("'")) or \
-       (value.startswith('"') and value.endswith('"')):
-        return ast.literal_eval(value)
-    return value
 
 # Read Settings
 config_file = CONFIG_DIR / 'config_character_types_kayra_test.ini'
@@ -117,7 +110,7 @@ env = os.environ
 # Init variable for login method
 if auth_method == "enter_key":
     auth = input("Enter your NovelAI access key: ")
-if auth_method == "enter_token":
+elif auth_method == "enter_token":
     auth = input("Enter your NovelAI access token: ")
 elif auth_method == "enter_login":
     auth = {}
@@ -135,17 +128,6 @@ else:
     raise RuntimeError(
         "Invalid value for 'auth_method'. Must be one of 'enter_key', 'enter_token', 'enter_login', 'env_key', 'env_token' or 'env_login'"
     )
-
-async def nai_login(api, auth_method, auth):
-    """
-    Log in to the NovelAI API using the specified authentication method and credentials.
-    """
-    if auth_method == "enter_key" or auth_method == "env_key":
-        await api.high_level.login_from_key(auth)
-    elif auth_method == "enter_token" or auth_method == "env_token":
-        await api.high_level.login_with_token(auth)
-    elif auth_method == "enter_login" or auth_method == "env_login":
-        await api.high_level.login(auth["user"], auth["pw"])
 
 async def gen_attg_candidate(
     model=Model.Clio,
@@ -265,40 +247,12 @@ def update__candidates_run_info(run_name, settings, terms_generated, terms_added
         updated_info = _candidates_run_info
     updated_info.to_csv(filename, index=False)
 
-class ImmediateFileHandler(logging.FileHandler):
-    """
-    A custom FileHandler that flushes the log file after each write.
-    """
-    def emit(self, record):
-        super().emit(record)
-        self.flush()
-
-def setup_logging(run_name):
-    """
-    Set up logging for the candidate generation process.
-    """
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    log_filename = PROJECT_ROOT / 'logs' / f"{run_name}_candidates_{timestamp}.log"
-    log_filename.parent.mkdir(parents=True, exist_ok=True)
-
-    logger = logging.getLogger(run_name)
-    logger.setLevel(logging.INFO)
-
-    file_handler = ImmediateFileHandler(str(log_filename))
-    file_handler.setLevel(logging.INFO)
-    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-    file_handler.setFormatter(formatter)
-
-    logger.addHandler(file_handler)
-
-    return logger
-
 async def main():
     """
     Main function to generate candidate phrases using the NovelAI API.
     """
     # Setup logging
-    logger = setup_logging(run_name)
+    logger = setup_logging(run_name, 'candidates', PROJECT_ROOT)
 
     # Load existing results if available
     df, bias_phrases = load_existing_candidates(run_name)
