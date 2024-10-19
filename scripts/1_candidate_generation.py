@@ -27,7 +27,7 @@ PROJECT_ROOT = SCRIPT_DIR.parent
 CONFIG_DIR = PROJECT_ROOT / 'config'
 
 # Read Settings
-config_file = CONFIG_DIR / 'config_character_types_kayra_details.ini'
+config_file = CONFIG_DIR / 'config_character_types_erato_basic.ini'
 config = configparser.ConfigParser()
 config.read(config_file)
 
@@ -44,6 +44,10 @@ bias_strength_inc = float(config['CANDIDATE GENERATION - GEN SETTINGS']['bias_st
 bias_phrases = ast.literal_eval(config['CANDIDATE GENERATION - GEN SETTINGS']['bias_phrases'])
 model_class, model_attr = config['CANDIDATE GENERATION - GEN SETTINGS']['model'].split('.')
 model = getattr(globals()[model_class], model_attr)
+
+# New options for printing top biases
+print_top_biases = config['CANDIDATE GENERATION - GEN SETTINGS'].getboolean('print_top_biases', fallback=False)
+top_biases_count = int(config['CANDIDATE GENERATION - GEN SETTINGS'].get('top_biases_count', '10'))
 
 # Handle 'prompts' as either a single string or a list of strings
 prompts = parse_config_value(config['CANDIDATE GENERATION - GEN SETTINGS']['prompts'])
@@ -168,7 +172,9 @@ async def gen_attg_candidate(
         )
 
         # After generating the text, keep the stop sequence
-        generated_text = Tokenizer.decode(model, b64_to_tokens(gen["output"]))
+        # Use 4 bytes for token decoding if the model is Erato
+        token_bytes = 4 if model == Model.Erato else 2
+        generated_text = Tokenizer.decode(model, b64_to_tokens(gen["output"], token_bytes))
         if not cut_stop_seq:
             # Find the first occurrence of any stop sequence
             stop_index = len(generated_text)
@@ -248,6 +254,15 @@ def update__candidates_run_info(run_name, settings, terms_generated, terms_added
         updated_info = _candidates_run_info
     updated_info.to_csv(filename, index=False)
 
+def print_top_biases(df, top_n):
+    """
+    Print the top N biases based on their count.
+    """
+    top_biases = df.sort_values(by="count", ascending=False).head(top_n)
+    print(f"\nTop {top_n} biases:")
+    for index, row in top_biases.iterrows():
+        print(f"{row['phrase']}: Count = {row['count']}, Last Bias = {row['last_bias']}")
+
 async def main():
     """
     Main function to generate candidate phrases using the NovelAI API.
@@ -293,7 +308,7 @@ async def main():
 
                 prompt_preview = prompt[:50] + "..." if len(prompt) > 50 else prompt
                 print(f"Gen {total_generations}: Trying to gen phrase {len(df)+1}/{candidates_goal}...")
-                print(f"Using prompt {prompt_index}/{len(prompts)}: {prompt_preview}")
+                print(f"Using prompt {prompt_index}/{len(prompts)}:\n{prompt_preview}")
                 logger.info(f"Gen {total_generations}: Trying to gen phrase {len(df)+1}/{candidates_goal}...")
                 logger.info(f"Using prompt {prompt_index}/{len(prompts)}: {prompt_preview}")
 
@@ -347,6 +362,10 @@ async def main():
                         print(f"Checkpoint saved at {total_generations} generations.")
                         logger.info(f"Checkpoint saved at {total_generations} generations.")
 
+                        # Print top biases if enabled
+                        if print_top_biases:
+                            print_top_biases(df, top_biases_count)
+
                 except asyncio.TimeoutError:
                     print("Generation took too long. Retrying...")
                     logger.warning("Generation took too long. Retrying...")
@@ -383,8 +402,11 @@ async def main():
             update__candidates_run_info(run_name, settings_data, total_generations, terms_added, "completed", start_time)
 
         print("\nCandidate search complete!")
-        print("Top 10 terms:")
-        print(df.sort_values(by="count", ascending=False).head(10))
+        if print_top_biases:
+            print_top_biases(df, top_biases_count)
+        else:
+            print("Top 10 terms:")
+            print(df.sort_values(by="count", ascending=False).head(10))
         logger.info("\nCandidate search complete!")
         logger.info("Top 10 terms:")
         logger.info(df.sort_values(by="count", ascending=False).head(10))

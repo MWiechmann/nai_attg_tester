@@ -136,7 +136,9 @@ async def gen_story(api, prompt, model, preset, max_length=max_gen_length):
     gen = await api.high_level.generate(
         prompt, model, preset, global_settings, None, None, None
     )
-    generated_text = Tokenizer.decode(model, b64_to_tokens(gen["output"]))
+    # Use 4 bytes for token decoding if the model is Erato
+    token_bytes = 4 if model == Model.Erato else 2
+    generated_text = Tokenizer.decode(model, b64_to_tokens(gen["output"], token_bytes))
     return generated_text
 
 async def generate_full_story(api, prompt, model, preset, story_words, max_retries=3, verbose=False, logger=None):
