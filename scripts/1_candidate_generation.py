@@ -27,7 +27,7 @@ PROJECT_ROOT = SCRIPT_DIR.parent
 CONFIG_DIR = PROJECT_ROOT / 'config'
 
 # Read Settings
-config_file = CONFIG_DIR / 'config_character_types_kayra_test.ini'
+config_file = CONFIG_DIR / 'config_character_types_kayra_details.ini'
 config = configparser.ConfigParser()
 config.read(config_file)
 
@@ -46,8 +46,9 @@ model_class, model_attr = config['CANDIDATE GENERATION - GEN SETTINGS']['model']
 model = getattr(globals()[model_class], model_attr)
 
 # Handle 'prompts' as either a single string or a list of strings
-prompts_raw = parse_config_value(config['CANDIDATE GENERATION - GEN SETTINGS']['prompts'])
-prompts = [prompts_raw] if isinstance(prompts_raw, str) else prompts_raw
+prompts = parse_config_value(config['CANDIDATE GENERATION - GEN SETTINGS']['prompts'])
+if isinstance(prompts, str):
+    prompts = [prompts]
 
 stop_sequences = ast.literal_eval(config['CANDIDATE GENERATION - GEN SETTINGS']['stop_sequences'])
 checkpoint_interval = int(config['CANDIDATE GENERATION - GEN SETTINGS']['checkpoint_interval'])

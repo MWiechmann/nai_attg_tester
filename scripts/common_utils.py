@@ -14,13 +14,23 @@ from novelai_api.GlobalSettings import GlobalSettings
 
 def parse_config_value(value):
     """
-    Parse a config value, preserving spaces if it's a quoted string.
+    Parse a config value, handling both single strings and lists of strings.
     """
-    value = value.strip()
-    if (value.startswith("'") and value.endswith("'")) or \
-       (value.startswith('"') and value.endswith('"')):
-        return ast.literal_eval(value)
-    return value
+    try:
+        # Try to evaluate as a Python literal
+        parsed_value = ast.literal_eval(value)
+        
+        # If it's a list, ensure all elements are strings
+        if isinstance(parsed_value, list):
+            return [str(item) for item in parsed_value]
+        elif isinstance(parsed_value, str):
+            return parsed_value
+        else:
+            # If it's neither a list nor a string, return the original value
+            return value
+    except (ValueError, SyntaxError):
+        # If it can't be evaluated, return it as a string
+        return value
 
 async def nai_login(api, auth_method, auth):
     """
@@ -29,7 +39,7 @@ async def nai_login(api, auth_method, auth):
     if auth_method in ["enter_key", "env_key"]:
         await api.high_level.login_from_key(auth)
     elif auth_method in ["enter_token", "env_token"]:
-        await api.high_level.login_with_token(auth)
+        api.high_level.auth_token = auth  # Directly set the auth_token
     elif auth_method in ["enter_login", "env_login"]:
         await api.high_level.login(auth["user"], auth["pw"])
 
